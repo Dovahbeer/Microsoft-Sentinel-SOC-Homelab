@@ -14,7 +14,21 @@ To create an enviorment that's also budget friendly, I decided to use VirtualBox
 - The ISO file was downloaded from [Microsoft's own website](https://www.microsoft.com/en-us/software-download/windows11).
 
   
-### Kali Linux
+### Kali Linux VM
 - Kali Linux version: kali-linux-2026.1-virtualbox-amd64.
 - Base memory set to 2048MB, number of CPU set to 2 and disk space set to 80GB.
 - The VirtualBox version was downloaded from [Kali's own website](https://www.kali.org/get-kali/#kali-virtual-machines)
+
+### Setting up the network
+We want the traffic between the Virtual Machines to be isolated from our existing home network. By navigating through VMware and changing the IP-addresses in the VM's, I set it up as:
+
+Network: Internal Network.
+
+Name: VMnet.
+- Windows VM:
+  - Ip-address:  192.168.20.10
+  - Subnet mask: 255.255.255.0
+
+- Kali Linux VM:
+  - Ip-address:  192.168.20.20
+  - Subnet mask: 255.255.255.0
