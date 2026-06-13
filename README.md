@@ -20,15 +20,17 @@ To create an enviorment that's also budget friendly, I decided to use VirtualBox
 - The VirtualBox version was downloaded from [Kali's own website](https://www.kali.org/get-kali/#kali-virtual-machines)
 
 ### Setting up the network
-We want the traffic between the Virtual Machines to be isolated from our existing home network. By navigating through VMware and changing the IP-addresses in the VM's, I set it up as:
+We want to create a network for the virtual machines to communicate on but also have it separate from our own private network. I devised the following setup:
 
-Network: Internal Network.
+**Network**: Internal Network.
 
-Name: VMnet.
-- Windows VM:
+**Name**: VMnet.
+- **Windows VM**:
   - Ip-address:  192.168.20.10
   - Subnet mask: 255.255.255.0
 
-- Kali Linux VM:
+- **Kali Linux VM**:
   - Ip-address:  192.168.20.20
   - Subnet mask: 255.255.255.0
+
+💡 *In a real design it's better to adjust the subnet mask to the amount of ip-addresses that are necessary, but in a homelab /24 will be sufficient enough for our purposes.*
