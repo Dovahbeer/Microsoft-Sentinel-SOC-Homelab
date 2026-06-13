@@ -11,6 +11,7 @@ To create an enviorment that's also budget friendly, I decided to use VirtualBox
   - Base memory set to 2048MB, number of CPU set to 2 and disk space set to 40GB.
   - The ISO file was downloaded from [Microsoft's own website](https://www.microsoft.com/en-us/software-download/windows11).
       - Windows version: Win11_25H2_English_x64_v2.
+
 - A host VM that utilizies Linux Kali.
   - Base memory set to 2048MB, number of CPU set to 2 and disk space set to 80GB.
   - The VirtualBox version was downloaded from [Kali's own website](https://www.kali.org/get-kali/#kali-virtual-machines)
