@@ -60,8 +60,40 @@ When proceeding with the following tabs:
 - **Monitoring**
   - On "Boot diagnostics", check "disable".
 
-# Step 3 - Setting up log transmission to Sentinel.
+After the VM has been reviewed and created, we can head back to our resource group and verify that everything has been successfully deployed:
 
-# Step 4 - Analyzing a few logs.
+<img width="1095" height="863" alt="image" src="https://github.com/user-attachments/assets/6a57c437-81eb-4510-852a-6e206c9c8587" />
+
+# Step 4 - Configuring the Network Security Group (NSG) & Windows Firewall
+
+### Network Security Group
+From the resource group we navigate to "/.../-nsg" on the list.
+
+As we want our VM to be accesible to the general public, we'll remove the default RDP rule and replacing it with one that is significantly more dangerous. 
+
+<img width="1658" height="417" alt="image" src="https://github.com/user-attachments/assets/f982c9d1-d81b-4ca0-8b18-a244775596fb" />
+
+In order to create a less secure inbound rule, we navigate to Settings --> Inbound Security rules --> + Add.
+
+Settings:
+- Source - Any
+- Source Port Ranges - *
+- Destination - Any
+- Service - Custom
+- Destination Port Ranges - *
+- Protocol - Any
+- Action - Allow
+- Priority - 100
+- Name - Dangerous_InBoundRule
+
+This setup generates a high amount of warnings:
+
+<img width="541" height="398" alt="image" src="https://github.com/user-attachments/assets/c04e1b2e-80a4-4bc0-96c6-fe97352a6510" />
+
+### Windows Defender
+
+# Step 5 - Setting up log transmission to Sentinel.
+
+# Step 6 - Analyzing a few logs.
 
 # What I've learned. 📝
