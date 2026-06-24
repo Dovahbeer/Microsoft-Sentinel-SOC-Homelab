@@ -24,16 +24,18 @@ We need to create the neccesary structure in Azure in order for this lab to work
 ### Resource Group
 First we create a Resource group, which allows us to group everything associated with this lab in one convenient spot. In a real SOC scenario this could be used to create and deploy templates, handle cost management or in this case organising labs in seperate entities.
 
-<img width="705" height="189" alt="image" src="https://github.com/user-attachments/assets/1ac72eda-7bd5-42bc-9807-f922dfd10517" />
+<img width="722" height="203" alt="image" src="https://github.com/user-attachments/assets/36dcb45b-3e85-41d4-839d-0a3aa4d38349" />
+
 
 ### Virtual Network
 To ensure that our VM will be able to communicate with other system and resources, we need to create a virtual network. This allows us to set up private ip-addresses, set up security rules and policies and allows us to configure internet access control.
 
-<img width="746" height="374" alt="image" src="https://github.com/user-attachments/assets/3fa2ed1d-31cd-4dbb-a98d-30f2f62d2e5a" />
+<img width="750" height="374" alt="image" src="https://github.com/user-attachments/assets/5b848400-1144-420d-b980-5984663522b0" />
+
 
 📝*Note: Ensure the region matches the one set in the resource group to prevent future issues*
 
-When navigating to the Security tab, make sure that none of the boxes are checked in. We do not want protections in place as that may negatively affect the amount of attacks on our VM. In a real scenario however it's expected to configure these settings appropriately. Furthermore we'll leave the address space untouched - we could do by with less ip-addresses, but for this basic level lab 256 addresses will suffice.
+When navigating to the Security tab, make sure that none of the boxes are checked in. We do not want protections in place as that may negatively affect the amount of attacks on our VM. In a real scenario however it's expected to configure these settings appropriately. Furthermore we'll leave the address space untouched - we could do by with less ip-addresses, but for this basic level lab it's fine to just leave as is.
 
 <img width="700" height="274" alt="image" src="https://github.com/user-attachments/assets/9578dab3-4d32-4867-8bdd-f55c5fc5be51" />
 
@@ -43,13 +45,20 @@ Our honeypot that need to be configured properly to attract attackers. At this p
 
 <img width="775" height="744" alt="WarningArrow" src="https://github.com/user-attachments/assets/fa4fcc99-f3c8-48d4-ba72-48fb703549da" />
 
-⚠️‼️**If you are following this guide, make absolutely sure you've checked in "Run with Azure Spot discount", otherwise your VM will bill you thousands of dollars per month.**‼️⚠️
+‼️⚠️ **If you are following this guide, make absolutely sure you've checked in "Run with Azure Spot discount", otherwise your VM will bill you thousands of dollars per month.** ⚠️‼️
 
 This was my final configuration, you can verify your pricing but looking at the highlighted part of the screenshot:
 
-<img width="770" height="669" alt="image" src="https://github.com/user-attachments/assets/90d7bd25-f543-447c-8d28-ecf88b7a3e3a" />
+<img width="771" height="743" alt="PricingHighlight" src="https://github.com/user-attachments/assets/ff2bf69a-2b13-42a7-bb80-e8280395e7b8" />
 
+When proceeding with the following tabs:
 
+- **Network**
+   - Ensure that "Virtual Network" is set to the one we created.
+   - Check the box for "Delete public IP and NIC when VM is deleted"
+
+- **Monitoring**
+  - On "Boot diagnostics", check "disable".
 
 # Step 3 - Setting up log transmission to Sentinel.
 
