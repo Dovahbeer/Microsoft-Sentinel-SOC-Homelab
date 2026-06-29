@@ -121,7 +121,7 @@ Naturally this generates a warning from Windows. We ping the public IP-address o
 
 *This allowed me to successfully ping the VM.*
 
-# Step 5 - Event viewer & Setting up log transmission to Sentinel.
+# Step 5 - Event viewer, Sentinel and SIEM.
 
 ### Event Viewer
 
@@ -147,9 +147,100 @@ We can extract some information from our failed login attempt:
 5. Category and keyword of the incidents.
 6. The computer (or this case, VM) that access was attempted towards.
 
-We're also able to recognize that **Event ID 4648** means a successfull login attempt and **Event ID 4625** means a failed login attempt. Knowing this we can filter out the noise and find relevant logs.
+We're also able to recognize that **Event ID 4648** means a successfull login attempt and **Event ID 4625** means a failed login attempt. Knowing this we can filter out the noise and find relevant logs manually if we so desire.
+
+### Azure Sentinel
+Leaving our VM open, we begin navigating through Microsft azure and reach Log Analytics workspaces (LAW) and create one. Again it's important that we select the correct resource group and region:
+
+<img width="719" height="315" alt="image" src="https://github.com/user-attachments/assets/d3266a42-bea0-46f9-9485-a63789b67af2" />
+
+
+We then proceed to create a Microsoft Sentinel to link to our LAW:
+
+<img width="1630" height="479" alt="image" src="https://github.com/user-attachments/assets/b670dfb0-dc12-458b-8634-83f795aee462" />
+
+Previously we would've navigated to the Content Hub in Microsoft Azure, but this feature has been moved to Microsoft Defender. The features we're after are the same but visually it might appear slightly different than other guides:
+
+<img width="856" height="584" alt="image" src="https://github.com/user-attachments/assets/c9fae0f4-af9d-4809-bc4a-fde7666beb25" />
+
+The program we're after is called _Windows Security Events_ and can be found by inputting "Security Event" in the search bar, we'll proceed with installing it:
+
+<img width="1215" height="639" alt="image" src="https://github.com/user-attachments/assets/97ab2cb6-b0ff-4030-b6db-5832a3065981" />
+
+After successfully installing it we can notice that we have no events. This is due to there not being a data connector to our VM which means there's no event to record. We'll configure it so that our VM will be able to output events for us:
+
+- Windows Security Events --> Manage.
+     - Windows Security Events via AMA --> Click box.
+          - Open connector page
+               - Create data collection rule, ensure right subscription and resource group.
+                   - Provide the VM as a machine
+            
+<img width="568" height="305" alt="image" src="https://github.com/user-attachments/assets/7f5a57e4-d2e2-4afd-befe-8408eb69856d" />
+
+
+<img width="532" height="208" alt="image" src="https://github.com/user-attachments/assets/2a4c0ef2-fe76-4d66-9206-68dd40e94b45" />
+
+
+
+Once this is done, our VM will begin outputting logs for us to analyze. At this point of the lab we'll leave the VM open to allow logs to generate overtime.
 
 
 # Step 6 - Analyzing a few logs.
+After waiting for 16 hours, we can review the logs that were generated while our VM was up and vulnurable.
+
+### KQL-queries
+The first is to filter out the noise so we can see the logs we're interested in - Real attacks that users have made towards our VM. We'll use KQL language to devise a proper query:
+
+SecurityEvent
+| where EventID == 4625
+| project TimeGenerated, Account, Computer, EventID, Activity, IpAddress
+
+With this query we'll see every log pertaining to failed login attempts and we'll see a neat presentation of the details we listed in it.
+
+### Mapping our results
+While the list is interesting, it can present even more useful information for us. We'll begin by downloading [GeoIP-Summarized](https://drive.google.com/file/d/13EfjM_4BohrmaxqXZLB5VUBIz2sv9Siz/view) 
+
+With the file on our computer we'll navigate back to Microsoft Sentinel --> (Name of the sentinel) --> Configuraton --> Watchlist. Note that this has also been moved to Microsoft Defender.
+
+We'll create a new Watch list:
+
+<img width="832" height="232" alt="image" src="https://github.com/user-attachments/assets/a7b848e2-0edd-4f0f-86c8-092196a76935" />
+
+<img width="810" height="479" alt="image" src="https://github.com/user-attachments/assets/617cefa2-f7b5-4dd0-9fd8-67b5f4fc0d3e" />
+
+Lastly we'll activate the watchlist by ticking in the box:
+
+<img width="564" height="367" alt="image" src="https://github.com/user-attachments/assets/e3b1b897-3a68-460e-a655-92a1033177b1" />
+
+Since GeoIP is large it will take some time before it will be added into the watchlist. When it's completed we should see roughly 55 thousands items being watched:
+
+<img width="306" height="133" alt="image" src="https://github.com/user-attachments/assets/24b15a0c-043e-43f9-8598-ba7458adc5dc" />
+
+Now we incorporate it into our KQL-query:
+
+let GeoIPDB_FULL = _GetWatchlist("GeoIP");
+let WindowsEvents = SecurityEvent
+   | where EventID == 4625
+   | order by TimeGenerated desc
+   | evaluate ipv4_lookup/GeoIPDB_FULL, IpAddress, network);
+WindowsEvents
+| project Timegenerated, Computer, AttackerIp = IpAddress, cityname, countryname, latitude, longitude
+
+### Workbook & Dashboard
+While we can view our logs neatly through KQL queries, it's useful to be able to review them collectively and visually. To do so we need to navigate towards workbooks in Microsoft Azure.
+
+- Microsoft Sentinel
+     - (Name of sentinel)
+          - Threat management
+               - Workbooks
+
+Again, workbooks have been moved over to Microsoft Defender but functions the same. Create a new workbook and remove the existing elements. We're going to import an already existing workbook from [here](https://drive.google.com/file/d/1ErlVEK5cQjpGyOcu4T02xYy7F31dWuir/view). We'll proceed as follows:
+
+- Add
+    - Add data source + visualization
+         - Advanced editor
+
+In here we'll wipe the existing query and replace it with our own.
 
 # What I've learned. 📝
+
