@@ -191,9 +191,13 @@ After waiting for 16 hours, we can review the logs that were generated while our
 ### KQL-queries
 The first is to filter out the noise so we can see the logs we're interested in - Real attacks that users have made towards our VM. We'll use KQL language to devise a proper query:
 
+
 SecurityEvent
+
 | where EventID == 4625
+
 | project TimeGenerated, Account, Computer, EventID, Activity, IpAddress
+
 
 With this query we'll see every log pertaining to failed login attempts and we'll see a neat presentation of the details we listed in it.
 
@@ -218,13 +222,21 @@ Since GeoIP is large it will take some time before it will be added into the wat
 
 Now we incorporate it into our KQL-query:
 
+
 let GeoIPDB_FULL = _GetWatchlist("GeoIP");
+
 let WindowsEvents = SecurityEvent
+
    | where EventID == 4625
+   
    | order by TimeGenerated desc
+   
    | evaluate ipv4_lookup/GeoIPDB_FULL, IpAddress, network);
+   
 WindowsEvents
+
 | project Timegenerated, Computer, AttackerIp = IpAddress, cityname, countryname, latitude, longitude
+
 
 ### Workbook & Dashboard
 While we can view our logs neatly through KQL queries, it's useful to be able to review them collectively and visually. To do so we need to navigate towards workbooks in Microsoft Azure.
