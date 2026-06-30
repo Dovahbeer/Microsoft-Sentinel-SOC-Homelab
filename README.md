@@ -186,7 +186,7 @@ Once this is done, our VM will begin outputting logs for us to analyze. At this 
 
 
 # Step 6 - Analyzing a few logs.
-After waiting for 16 hours, we can review the logs that were generated while our VM was up and vulnurable.
+After waiting for 24 hours, we can review the logs that were generated while our VM was up and vulnurable.
 
 ### KQL-queries
 The first is to filter out the noise so we can see the logs we're interested in - Real attacks that users have made towards our VM. We'll use KQL language to devise a proper query:
