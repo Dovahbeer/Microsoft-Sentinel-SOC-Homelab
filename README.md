@@ -201,6 +201,9 @@ SecurityEvent
 
 With this query we'll see every log pertaining to failed login attempts and we'll see a neat presentation of the details we listed in it.
 
+<img width="873" height="617" alt="image" src="https://github.com/user-attachments/assets/0ee195fb-b843-4513-9405-a7e391ee0b3b" />
+
+
 ### Mapping our results
 While the list is interesting, it can present even more useful information for us. We'll begin by downloading [GeoIP-Summarized](https://drive.google.com/file/d/13EfjM_4BohrmaxqXZLB5VUBIz2sv9Siz/view) 
 
