@@ -17,6 +17,15 @@ In Microsoft Azure, we will build:
 ### Disclaimer
 As this is one of my earlier projects, some sections cover even the most fundamental concepts. This approach helped me ensure that I fully understood each step and could explain it clearly to others.
 
+
+### Table of content
+
+Step 1 - Setting up Microsoft Azure.
+Step 2 - Configuring the Virtual Machine.
+Step 3 - Configuring the Network Security Group (NSG) & Windows Firewall
+Step 4 - Event viewer, Sentinel and SIEM.
+Step 5 - Analyzing a few logs.
+
 # Step 1 - Setting up Microsoft Azure.
 Microsoft provides a free Azure trial, meaning we only need a Microsoft account to get started.
 
@@ -73,7 +82,7 @@ After the VM has been reviewed and created, we can head back to our resource gro
 
 <img width="1095" height="863" alt="image" src="https://github.com/user-attachments/assets/6a57c437-81eb-4510-852a-6e206c9c8587" />
 
-# Step 4 - Configuring the Network Security Group (NSG) & Windows Firewall
+# Step 3 - Configuring the Network Security Group (NSG) & Windows Firewall
 
 ### Network Security Group
 From the resource group we navigate to "/.../-nsg" on the list.
@@ -130,7 +139,7 @@ Naturally this generates a warning from Windows. We ping the public IP-address o
 
 *This allowed me to successfully ping the VM.*
 
-# Step 5 - Event viewer, Sentinel and SIEM.
+# Step 4 - Event viewer, Sentinel and SIEM.
 
 ### Event Viewer
 
@@ -194,7 +203,7 @@ After successfully installing it we can notice that we have no events. This is d
 Once this is done, our VM will begin outputting logs for us to analyze. At this point of the lab we'll leave the VM open to allow logs to generate over time.
 
 
-# Step 6 - Analyzing a few logs.
+# Step 5 - Analyzing a few logs.
 After waiting for 24 hours, we can review the logs that were generated while our VM was up and vulnerable.
 
 ### KQL-queries
@@ -212,9 +221,21 @@ With this query we'll see every log pertaining to failed login attempts and we'l
 
 <img width="873" height="617" alt="image" src="https://github.com/user-attachments/assets/0ee195fb-b843-4513-9405-a7e391ee0b3b" />
 
+### Deep-diving into one log
+
+Let's analyse the log at the top of the search result, we can see that the IP-address is 124.88.46.182.
+
+Putting the IP-address into abuseip we can see that the address has been reported over 40 times and originates from China. Below the summary we'll see that the IP-address was reported as Brute-Force hacking as recently as 1 day ago.
+
+<img width="659" height="523" alt="image" src="https://github.com/user-attachments/assets/1f0ab97c-f443-4da4-81fa-d6c01fb1f406" />
+
+Inputting the IP-address into whatismyip, we get additional information such as city name, postal code, coordinates, IPS and Organization.
+
+<img width="1138" height="585" alt="image" src="https://github.com/user-attachments/assets/4ae4c421-edf0-44f0-addb-2a379aeedfec" />
+
 
 ### Mapping our results
-While the list is interesting, it can present even more useful information for us. We'll begin by downloading [GeoIP-Summarized](https://drive.google.com/file/d/13EfjM_4BohrmaxqXZLB5VUBIz2sv9Siz/view) 
+While the list is interesting and deep-dive, it can present even more useful information for us. We'll begin by downloading [GeoIP-Summarized](https://drive.google.com/file/d/13EfjM_4BohrmaxqXZLB5VUBIz2sv9Siz/view) 
 
 With the file on our computer we'll navigate back to Microsoft Sentinel --> (Name of the sentinel) --> Configuration --> Watchlist. Note that this has also been moved to Microsoft Defender.
 
