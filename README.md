@@ -21,9 +21,13 @@ As this is one of my earlier projects, some sections cover even the most fundame
 ### Table of content
 
 Step 1 - Setting up Microsoft Azure.
+
 Step 2 - Configuring the Virtual Machine.
+
 Step 3 - Configuring the Network Security Group (NSG) & Windows Firewall
+
 Step 4 - Event viewer, Sentinel and SIEM.
+
 Step 5 - Analyzing a few logs.
 
 # Step 1 - Setting up Microsoft Azure.
